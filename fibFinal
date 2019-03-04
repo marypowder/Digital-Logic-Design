@@ -16,11 +16,9 @@ module fib_G(in, out);
     nand and_2(nand2,in[1],not_c,in[3]);
     nand and_3(nand3,not_b,not_c,not_d);
     
-    nand or_0(out,nand0,nand1,nand2,nand3)
+    nand or_0(out,nand0,nand1,nand2,nand3);
     
 endmodule
-
-///////////////////////////////////////////
 
 module fib_D(in, out);
     input [3:0]in;
@@ -29,30 +27,25 @@ module fib_D(in, out);
     //your code here
     assign out=((~&in[0])~&(~&in[1]))~&((~&in[0])~&(~&in[2])~&in[3])~&(in[1]&(~&in[2])~&in[3])~&((~&in[1])~&(~&in[2])~&(~&in[3]));
 
-endmodule
 
-///////////////////////////////////////////
+endmodule
 
 module fib_B(in, out);
     input [3:0]in;
     output out;
     
     //wryyyyy
-        parameter n=4;
+    reg out;//It must be changed to reg type because of using in always block.
             
-            input [n-1:0]in;
-            output out;//Be careful the default type is wire!!
-            reg out;//It must be changed to reg type because of using in always block.
-            
-            always@(*)begin
-                case(in)
-                    0,1,2,3,5,8,13:begin
-                        out=1'b1;
-                    end
-                    default:begin
-                        out=1'b0;
-                    end
-                endcase
+    always@(*)begin
+        case(in)
+            0,1,2,3,5,8,13:begin
+                out=1'b1;
             end
+            default:begin
+                out=1'b0;
+                end
+        endcase
+    end
     
 endmodule
