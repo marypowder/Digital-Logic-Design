@@ -27,7 +27,7 @@ module fib_D(in, out);
     output out;
     
     //your code here
-    assign out=(!in[0]&!in[1])|(!in[0]&!in[2]&in[3])|(in[1]&!in[2]&!in[3])|(!in[1]&!in[2]&!in[3]);
+    assign out=((~&in[0])&(~&in[1]))~&((~&in[0])&(~&in[2])&in[3])~&(in[1]&(~&in[2])&in[3])~&((~&in[1])&(~&in[2])&(~&in[3]));
 
 endmodule
 
