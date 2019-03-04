@@ -44,14 +44,9 @@ module fib_B(in, out);
             output out;//Be careful the default type is wire!!
             reg out;//It must be changed to reg type because of using in always block.
             
-            /*
-            or you can combine these two line into 
-            output reg out;
-            */
-            
             always@(*)begin
                 case(in)
-                    0,1,5,7:begin
+                    0,1,2,3,5,8,13:begin
                         out=1'b1;
                     end
                     default:begin
