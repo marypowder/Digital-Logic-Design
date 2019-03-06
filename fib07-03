@@ -1,0 +1,101 @@
+module fib_G(in, out);
+    input [3:0]in;
+    output out;
+    
+    //your code here
+    wire not_a, not_b, not_c, not_d;
+    wire nand0,nand1,nand2,nand3,nand4;
+    
+    nand not_0(not_a,in[0]);
+    nand not_1(not_b,in[1]);
+    nand not_2(not_c,in[2]);
+    nand not_3(not_d,in[3]);
+    
+    nand and_0(nand0,not_d,not_c,in[1]);
+    nand and_1(nand1,not_d,not_c,in[0]);
+    nand and_2(nand2,not_d,not_b,in[0]);
+    nand and_3(nand3,in[2],not_b,in[0]);
+    nand and_4(nand4,in[3],not_c,not_b,not_a);
+    
+    nand or_0(out,nand0,nand1,nand2,nand3,nand4);
+    
+endmodule
+
+module fib_D(in, out);
+    input [3:0]in;
+    output out;
+    
+    //your code here
+    assign out=(in[1]&!in[2]&!in[3])|(in[0]&!in[2]&!in[3])|(in[0]&!in[1]&!in[3])|(in[0]&!in[1]&in[2])|(!in[0]&!in[1]&!in[2]&in[3]);
+
+
+endmodule
+
+module fib_B(in, out);
+    input [3:0]in;
+    output out;
+    
+    //wryyyyy
+    reg out;//It must be changed to reg type because of using in always block.
+            
+    always@(*)begin
+        case(in)
+            1,2,3,5,8,13:begin
+                out=1'b1;
+            end
+            default:begin
+                out=1'b0;
+                end
+        endcase
+    end
+    
+endmodule
+
+module fib_tb;
+        parameter delay=5;
+
+        wire out_G,out_D,out_B;
+        reg [3:0]in;
+        integer i;
+
+
+
+        initial begin
+            //Give initial value.
+            in=0;
+            for(i=0;i<16;i=i+1)begin
+                #delay
+                //(0, 1, 2, 3, 5, 8, 13)
+                if((out_G!=out_D)||(out_D!=out_B)||
+                    ((in==0||in==1||in==2||in==3||in==5||in==8||in==13)&&(out_G&out_D&out_B)==0)||
+                    ((in!=0&&in!=1&&in!=2&&in!=3&&in!=5&&in!=8&&in!=13)&&(out_G|out_D|out_B)==1))
+                begin
+                    $display("-----------wrong answer!!------------\n");
+                    $display("time=%4d,in=%b,out_G=%b,out_D=%b,out_B=%b",$time,in,out_G,out_D,out_B);
+                    $display("-----------------------\n");
+                    $finish;//program end here
+                end
+                $display("time=%4d,in=%b,out_G=%b,out_D=%b,out_B=%b",$time,in,out_G,out_D,out_B);
+                in=in+1;
+            end
+            $display("All pass!! subarashii ");
+            $finish;//program end here
+        end
+
+        fib_G gate
+        (
+            .in(in),
+            .out(out_G)
+        );
+        fib_D DF
+        (
+            .in(in),
+            .out(out_D)
+        );
+        fib_B BH
+        (
+            .in(in),
+            .out(out_B)
+        );
+
+    endmodule
